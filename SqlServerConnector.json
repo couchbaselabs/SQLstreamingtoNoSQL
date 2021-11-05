@@ -1,0 +1,20 @@
+{  "name": "SqlServerConnectorConnector_0",
+   "config":
+   {
+   "connector.class":"io.debezium.connector.sqlserver.SqlServerConnector",
+   "database.dbname":"test",
+   "database.user":"sa",
+   "database.hostname":"sqlserver",
+   "database.password":"Password!",
+   "database.history.kafka.bootstrap.servers":"broker:9092",
+   "database.history.kafka.topic":"db.history",
+   "name":"SqlServerConnectorConnector_0",
+   "database.server.name":"test",
+   "database.port":"1433",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "include.schema.changes": "false"
+    } 
+}

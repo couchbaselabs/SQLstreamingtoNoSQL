@@ -1,0 +1,14 @@
+{
+	"name": "CouchbaseSinkConnectorConnector_0",
+	"config": {
+		"connector.class": "com.couchbase.connect.kafka.CouchbaseSinkConnector",
+		"couchbase.bucket": "test",
+		"tasks.max": "1",
+		"topics": "test.store.products",
+		"couchbase.username": "Administrator",
+		"couchbase.topic.to.collection": "test.store.products=store.products",
+		"name": "CouchbaseSinkConnectorConnector_0",
+		"couchbase.password": "password",
+		"couchbase.seed.nodes": "couchbase"
+	}
+}
