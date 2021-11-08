@@ -8,4 +8,7 @@
    curl -X POST -H "Content-Type: application/json" -d @SQLServerConnector.json http://localhost:8083/connectors  
    curl -X POST -H "Content-Type: application/json" -d @CouchbaseSinkConnector.json http://localhost:8083/connectors
 6) Access to Control Center on localhost:9021 and verify that the connectors are OK
-7) TODO: Create proper KSQLDB streams to transform the data and load them in Couchbase with the proper key
+7) Create proper KSQLDB streams to transform the data and load them in Couchbase with the proper key, e.g.:
+* CREATE STREAM PRODUCTS WITH (KAFKA_TOPIC='test.store.products', VALUE_FORMAT='AVRO');*
+* CREATE STREAM TARGET_PRODUCTS WITH (KAFKA_TOPIC='target_products', VALUE_FORMAT='AVRO') AS SELECT 'product::'+ CAST(AFTER->PRODUCTID AS VARCHAR)  KEY,AFTER->PRODUCTID AS "productId", AFTER->PRODUCTNAME AS "productName", AFTER->BRANDID AS "brandId", AFTER->CATEGORYID AS "categoryId", AFTER->YEAR AS "year", ROUND(AFTER->PRICE,2) AS "price" FROM PRODUCTS;  *
+ 
