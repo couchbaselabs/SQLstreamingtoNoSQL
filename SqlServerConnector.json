@@ -10,11 +10,6 @@
    "database.history.kafka.topic":"db.history",
    "name":"SqlServerConnectorConnector_0",
    "database.server.name":"test",
-   "database.port":"1433",
-    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "key.converter.schemas.enable": "false",
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "false",
-    "include.schema.changes": "false"
+   "database.port":"1433"
     } 
 }
