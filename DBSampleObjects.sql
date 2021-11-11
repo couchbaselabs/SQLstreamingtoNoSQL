@@ -6,6 +6,9 @@ sample data
 */
 -- create schemas
 
+create database test;
+use test;
+EXEC sys.sp_cdc_enable_db;
 CREATE SCHEMA store;
 go
 
@@ -38,7 +41,7 @@ CREATE TABLE store.orders (
 	orderId INT IDENTITY (1, 1) PRIMARY KEY,
 	customerId INT,
 	orderStatus tinyint NOT NULL,
-	orderDate DATE NOT NULL,
+	orderDate VARCHAR (15) NOT NULL,
 	FOREIGN KEY (customerId) REFERENCES store.customers (customerId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

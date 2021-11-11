@@ -1,0 +1,14 @@
+select * FROM
+store.customers as a JOIN 
+store.orders as b
+on a.customerId=b.customerId
+WHERE
+email='jjj@y.com'
+
+select * from 
+store.orders as a JOIN
+store.order_items as b
+on a.orderId=b.orderId JOIN 
+store.products as c
+on b.productId=c.productId
+where a.orderId=1

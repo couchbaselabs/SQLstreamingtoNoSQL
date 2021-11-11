@@ -1,14 +1,16 @@
 {
-	"name": "CouchbaseSinkConnectorConnector_0",
+	"name": "CouchbaseSinkConnectorConnector_1",
 	"config": {
-		"connector.class": "com.couchbase.connect.kafka.CouchbaseSinkConnector",
-		"couchbase.bucket": "test",
-		"tasks.max": "1",
-		"topics": "test.store.products",
-		"couchbase.username": "Administrator",
-		"couchbase.topic.to.collection": "test.store.products=store.products",
-		"name": "CouchbaseSinkConnectorConnector_0",
-		"couchbase.password": "password",
-		"couchbase.seed.nodes": "couchbase"
+	  "connector.class": "com.couchbase.connect.kafka.CouchbaseSinkConnector",
+	  "couchbase.bucket": "test",
+	  "tasks.max": "1",
+	  "topics": "target_customers, target_products, target_order_items, target_orders",
+	  "couchbase.username": "Administrator",
+	  "couchbase.document.id": "${/KEY}",
+	  "couchbase.topic.to.collection": "target_products=store.products, target_customers=store.customers, target_orders=store.orders, target_order_items=store.order_items",
+	  "name": "CouchbaseSinkConnectorConnector_1",
+	  "couchbase.password": "password",
+	  "couchbase.remove.document.id": "true",
+	  "couchbase.seed.nodes": "couchbase"
 	}
 }

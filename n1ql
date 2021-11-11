@@ -1,0 +1,3 @@
+create primary index on test.store.customers
+create primary index on test.store.orders
++create primary index on test.store.products

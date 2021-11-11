@@ -1,4 +1,4 @@
-{  "name": "SqlServerConnectorConnector_0",
+{  "name": "SqlServerConnectorConnector_1",
    "config":
    {
    "connector.class":"io.debezium.connector.sqlserver.SqlServerConnector",
@@ -8,8 +8,8 @@
    "database.password":"Password!",
    "database.history.kafka.bootstrap.servers":"broker:9092",
    "database.history.kafka.topic":"db.history",
-   "name":"SqlServerConnectorConnector_0",
+   "name":"SqlServerConnectorConnector_1",
    "database.server.name":"test",
    "database.port":"1433"
-    } 
+   } 
 }
