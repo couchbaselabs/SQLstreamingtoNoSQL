@@ -1,3 +1,24 @@
 create primary index on test.store.customers
 create primary index on test.store.orders
-+create primary index on test.store.products
+create primary index on test.store.products
+create primary index on test.store.order_items
+
+CREATE INDEX adv_email ON `default`:`test`.`store`.`customers`(`email`)
+
+CREATE INDEX adv_customerId ON `default`:`test`.`store`.`orders`(`customerId`)
+
+
+select * FROM
+customers as a JOIN 
+orders as b
+on a.customerId=b.customerId
+WHERE
+a.email='jjj@y.com'
+
+
+CREATE INDEX adv_orderId ON `default`:`test`.`store`.`order_items`(`orderId`)
+
+CREATE INDEX adv_productId ON `default`:`test`.`store`.`products`(`productId`)
+
+CREATE INDEX adv_orderId ON `default`:`test`.`store`.`orders`(`orderId`)
+
