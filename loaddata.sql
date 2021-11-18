@@ -4,16 +4,16 @@ SET IDENTITY_INSERT store.orders OFF;
 
 -- store.products table
 SET IDENTITY_INSERT store.products ON;
-INSERT INTO store.products(productId, productName,  price) VALUES(1,'Banana',1.99);
-INSERT INTO store.products(productId, productName,  price) VALUES(2,'Apple',2.99);
-INSERT INTO store.products(productId, productName,  price) VALUES(3,'Passion Fruit',2.22)
-INSERT INTO store.products(productId, productName,  price) VALUES(4,'Orange',2.22)
-INSERT INTO store.products(productId, productName,  price) VALUES(5,'Watermelon',0.99)
-INSERT INTO store.products(productId, productName,  price) VALUES(6,'Mango',9.99)
-INSERT INTO store.products(productId, productName,  price) VALUES(7,'Peach',2.22)
-INSERT INTO store.products(productId, productName,  price) VALUES(8,'Pear',1.22)
-INSERT INTO store.products(productId, productName,  price) VALUES(9,'Kiwi',1.99)
-INSERT INTO store.products(productId, productName,  price) VALUES(10,'Grapes',1.99)
+INSERT INTO store.products(productId, productName, description,  price) VALUES(1,'Banana', 'Good fruit',1.99);
+INSERT INTO store.products(productId, productName, description, price) VALUES(2,'Apple', 'Tasty',2.99);
+INSERT INTO store.products(productId, productName, description, price) VALUES(3,'Passion Fruit','Very sweet',2.22)
+INSERT INTO store.products(productId, productName, description, price) VALUES(4,'Orange','Good',2.22)
+INSERT INTO store.products(productId, productName, description, price) VALUES(5,'Watermelon','Great',0.99)
+INSERT INTO store.products(productId, productName, description, price) VALUES(6,'Mango','Super sweet',9.99)
+INSERT INTO store.products(productId, productName, description, price) VALUES(7,'Peach','Awesome',2.22)
+INSERT INTO store.products(productId, productName, description,  price) VALUES(8,'Pear','Just top',1.22)
+INSERT INTO store.products(productId, productName, description, price) VALUES(9,'Kiwi','Great from New Zealand',1.99)
+INSERT INTO store.products(productId, productName, description, price) VALUES(10,'Grapes','Super tasty',1.99)
 
 SET IDENTITY_INSERT store.products OFF;
 

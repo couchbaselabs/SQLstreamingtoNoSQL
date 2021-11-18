@@ -18,6 +18,7 @@ go
 CREATE TABLE store.products (
 productId INT IDENTITY (1, 1) PRIMARY KEY,
 productName VARCHAR (255) NOT NULL,
+description VARCHAR (255) NOT NULL,
 price REAL  NOT NULL)
 ;
 
