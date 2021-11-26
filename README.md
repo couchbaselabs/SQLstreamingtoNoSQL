@@ -1,4 +1,4 @@
-# confluentdemo
+# From SQL to NoSQL streaming
 
 1) To build kafka connect container with proper connectors run: docker build . -t connect:1.0.0. with the provided DockerFile
 2) To start Confluent Platform, Couchbase server and SQL Server inside the same network run: docker compose up -d
