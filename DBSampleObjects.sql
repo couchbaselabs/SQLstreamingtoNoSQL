@@ -10,7 +10,7 @@ create database test;
 use test;
 EXEC sys.sp_cdc_enable_db;
 CREATE SCHEMA store;
-go
+
 
 -- create tables
 
@@ -23,7 +23,7 @@ price REAL  NOT NULL)
 ;
 
 EXEC sys.sp_cdc_enable_table @source_schema = 'store', @source_name = 'products', @role_name = NULL, @supports_net_changes = 0;
-GO
+
 
 CREATE TABLE store.customers (
 	customerId INT IDENTITY (1, 1) PRIMARY KEY,
@@ -35,7 +35,7 @@ CREATE TABLE store.customers (
 );
 
 EXEC sys.sp_cdc_enable_table @source_schema = 'store', @source_name = 'customers', @role_name = NULL, @supports_net_changes = 0;
-GO
+
 
 
 CREATE TABLE store.orders (
@@ -47,7 +47,7 @@ CREATE TABLE store.orders (
 );
 
 EXEC sys.sp_cdc_enable_table @source_schema = 'store', @source_name = 'orders', @role_name = NULL, @supports_net_changes = 0;
-GO
+
 
 
 CREATE TABLE store.order_items (
@@ -62,6 +62,6 @@ CREATE TABLE store.order_items (
 );
 
 EXEC sys.sp_cdc_enable_table @source_schema = 'store', @source_name = 'order_items', @role_name = NULL, @supports_net_changes = 0;
-GO
+
 
 

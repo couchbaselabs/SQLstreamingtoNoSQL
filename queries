@@ -12,3 +12,20 @@ on a.orderId=b.orderId JOIN
 store.products as c
 on b.productId=c.productId
 where a.orderId=1
+
+
+select * FROM
+customers as a JOIN 
+orders as b
+on a.customerId=b.customerId
+WHERE
+a.email='jjj@y.com'
+
+
+select * from 
+orders as a JOIN
+order_items as b
+on a.orderId=b.orderId JOIN 
+products as c
+on b.productId=c.productId
+where a.orderId=1
