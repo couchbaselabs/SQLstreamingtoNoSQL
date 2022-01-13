@@ -139,6 +139,7 @@ services:
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
+  
 
   ksql-datagen:
     image: confluentinc/ksqldb-examples:6.2.1
@@ -179,7 +180,7 @@ services:
   
   sqlserver:
     hostname: sqlserver
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: belio1/sqlserverdemo:1.0.0
     ports:
      - 1433:1433
     environment:
@@ -190,6 +191,12 @@ services:
 
   couchbase:
     hostname: couchbase
-    image: couchbase:enterprise-7.0.2
+    image: belio1/couchbaseserver:1.0.0
     ports:
      - 8091-8096:8091-8096
+    environment:  
+      - USER=Administrator
+      - PASS=password
+      - BUCKET=test
+      - SCOPE=store
+      - COLLECTIONS=products,customers,orders,order_items
