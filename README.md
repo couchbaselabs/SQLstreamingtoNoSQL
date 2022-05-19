@@ -1,5 +1,9 @@
 # From SQL to NoSQL streaming
 
+Prerequisite:
+Run sh cleanup.sh to clean up previous containers
+
+Steps:
 1) To start Confluent Platform, Couchbase server and SQL Server inside the same network run: docker compose up -d. This will start SQL server with pre populated tables and Couchbase server with all the scopes and collection already created.
 2) Create the SQL Server Source and Sink Connectors:
 *  curl -X POST -H "Content-Type: application/json" -d @SQLServerConnector.json http://localhost:8083/connectors  
