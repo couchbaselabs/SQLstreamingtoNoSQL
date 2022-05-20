@@ -6,7 +6,7 @@
    "database.user":"sa",
    "database.hostname":"sqlserver",
    "database.password":"Password!",
-   "database.history.kafka.bootstrap.servers":"broker:9092",
+   "database.history.kafka.bootstrap.servers":"broker:29092",
    "database.history.kafka.topic":"db.history",
    "name":"SqlServerConnectorConnector_1",
    "database.server.name":"test",
