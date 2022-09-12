@@ -28,7 +28,7 @@ Steps:
 08) Create a user named "application", choose a password, and give read/write access to the "store" scope
 09) Configure your IP in the allowed IPs
 10) Copy the root certificate into a capella.pem file
-11) To start Confluent Platform, Couchbase server and SQL Server inside the same network run: docker compose up -d. 
+11) To start Confluent Platform and SQL Server inside the same network run: docker compose up -d. 
 12) Copy capella.pem file into kafka connect container : docker cp capella.pem connect:/home/appuser
 13) Edit CouchbaseTLSSinkConnector.json and provide :
  * "couchbase.seed.nodes": "*paste url from capella cluster connect*",
