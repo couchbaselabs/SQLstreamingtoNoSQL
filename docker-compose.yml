@@ -1,47 +1,35 @@
-version: '2'
+version: "3.7"
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.3
-    hostname: zookeeper
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    restart: always
+
   broker:
-    image: confluentinc/cp-server:7.0.3
+    image: confluentinc/cp-kafka:7.6.1
     hostname: broker
     container_name: broker
-    restart: always
-    depends_on:
-      - zookeeper
     ports:
       - "9092:9092"
       - "9101:9101"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092'
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9101
       KAFKA_JMX_HOSTNAME: localhost
-      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      CONFLUENT_METRICS_ENABLE: 'true'
-      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-    
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@broker:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      # Replace CLUSTER_ID with a unique base64 UUID using "bin/kafka-storage.sh random-uuid" 
+      # See https://docs.confluent.io/kafka/operations-tools/kafka-tools.html#kafka-storage-sh
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.0.3
+    image: confluentinc/cp-schema-registry:7.6.1
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -54,7 +42,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   connect:
-    image: cnfldemos/cp-server-connect-datagen:0.5.0-6.2.0
+    image: cnfldemos/cp-server-connect-datagen:0.6.4-7.6.0
     hostname: connect
     container_name: connect
     depends_on:
@@ -62,7 +50,6 @@ services:
       - schema-registry
     ports:
       - "8083:8083"
-    restart: always
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
@@ -78,7 +65,7 @@ services:
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       # CLASSPATH required due to CC-2422
-      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.0.3.jar
+      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.6.1.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
@@ -90,18 +77,18 @@ services:
         # Install connector plugins
         # This will by default install into /usr/share/confluent-hub-components/ so make
         #  sure that this path is added to the plugin.path in the environment variables 
-        confluent-hub install --no-prompt couchbase/kafka-connect-couchbase:4.1.7 
-        confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:1.8.1 
+        confluent-hub install --no-prompt couchbase/kafka-connect-couchbase:4.2.2 
+        confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:2.5.4 
         # Launch the Kafka Connect worker
         /etc/confluent/docker/run &
         # Don't exit
         sleep infinity    
 
+
   control-center:
-    image: confluentinc/cp-enterprise-control-center:7.0.3
+    image: confluentinc/cp-enterprise-control-center:7.6.1
     hostname: control-center
     container_name: control-center
-    restart: always
     depends_on:
       - broker
       - schema-registry
@@ -112,6 +99,7 @@ services:
     environment:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
       CONTROL_CENTER_CONNECT_CONNECT-DEFAULT_CLUSTER: 'connect:8083'
+      CONTROL_CENTER_CONNECT_HEALTHCHECK_ENDPOINT: '/connectors'
       CONTROL_CENTER_KSQL_KSQLDB1_URL: "http://ksqldb-server:8088"
       CONTROL_CENTER_KSQL_KSQLDB1_ADVERTISED_URL: "http://localhost:8088"
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
@@ -122,10 +110,9 @@ services:
       PORT: 9021
 
   ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:7.0.3
+    image: confluentinc/cp-ksqldb-server:7.6.1
     hostname: ksqldb-server
     container_name: ksqldb-server
-    restart: always
     depends_on:
       - broker
       - connect
@@ -146,7 +133,7 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
 
   ksqldb-cli:
-    image: confluentinc/cp-ksqldb-cli:7.0.3
+    image: confluentinc/cp-ksqldb-cli:7.6.1
     container_name: ksqldb-cli
     depends_on:
       - broker
@@ -156,10 +143,9 @@ services:
     tty: true
 
   ksql-datagen:
-    image: confluentinc/ksqldb-examples:7.0.3
+    image: confluentinc/ksqldb-examples:7.6.1
     hostname: ksql-datagen
     container_name: ksql-datagen
-    restart: always
     depends_on:
       - ksqldb-server
       - broker
@@ -179,8 +165,7 @@ services:
       STREAMS_SCHEMA_REGISTRY_PORT: 8081
 
   rest-proxy:
-    image: confluentinc/cp-kafka-rest:7.0.3
-    restart: always
+    image: confluentinc/cp-kafka-rest:7.6.1
     depends_on:
       - broker
       - schema-registry
@@ -193,7 +178,7 @@ services:
       KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
-  
+
   sqlserver:
     hostname: sqlserver
     image: belio1/sqlserverdemo:1.0.0
@@ -207,12 +192,14 @@ services:
 
   couchbase:
     hostname: couchbase
-    image: belio1/couchbaseserver:1.0.0
+    image: belio1/couchbaseserver:1.0.1
+    build:
+      context: ../
+    environment:
+      - CB_SERVICES=kv,n1ql,index,eventing
+    volumes:
+      - "./startup:/startup"
     ports:
-     - 8091-8096:8091-8096
-    environment:  
-      - USER=Administrator
-      - PASS=password
-      - BUCKET=test
-      - SCOPE=store
-      - COLLECTIONS=products,customers,orders,order_items
+      - "8091-8096:8091-8096"
+      - "11207:11207"
+      - "11210-11211:11210-11211"

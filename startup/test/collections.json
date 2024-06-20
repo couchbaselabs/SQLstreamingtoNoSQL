@@ -1,0 +1,12 @@
+{
+    "scopes": {
+      "store": {
+        "collections": [
+          "products",
+          "customers",
+          "orders",
+          "order_items"
+        ]
+      }
+    }
+  }

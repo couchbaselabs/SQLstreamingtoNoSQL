@@ -2,14 +2,16 @@
    "config":
    {
    "connector.class":"io.debezium.connector.sqlserver.SqlServerConnector",
-   "database.dbname":"test",
+   "topic.prefix":"demo",
+   "database.names":"test",
    "database.user":"sa",
    "database.hostname":"sqlserver",
    "database.password":"Password!",
-   "database.history.kafka.bootstrap.servers":"broker:29092",
-   "database.history.kafka.topic":"db.history",
    "name":"SqlServerConnectorConnector_1",
    "database.server.name":"test",
-   "database.port":"1433"
+   "database.port":"1433",
+   "database.encrypt": false,
+   "schema.history.internal.kafka.bootstrap.servers": "broker:29092", 
+   "schema.history.internal.kafka.topic": "db.history"
    } 
 }
