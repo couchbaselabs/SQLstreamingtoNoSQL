@@ -1,4 +1,4 @@
-# From SQL to NoSQL streaming
+# From SQL to NoSQL streaming (updated to 7.6)
 
 ## Stream to standard Couchbase server
 Prerequisite:
